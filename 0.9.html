@@ -264,7 +264,7 @@
 <body>
     <div class="container">
         <header>
-            <h1>ORGANIZADOR SEMANAL</h1>
+            <h1 id="titulo-semana">ORGANIZADOR SEMANAL</h1>
             <div style="margin-top: 10px;">
                 <a href="index.html" class="btn-inicio">Inicio</a>
             </div>
@@ -288,10 +288,16 @@
     </div>
 
     <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const semanaActual = urlParams.get('semana') || 'general';
+        if (semanaActual !== 'general') {
+            const textoFormateado = semanaActual.replace('-', ' - SEMANA ').toUpperCase();
+            document.getElementById('titulo-semana').textContent = textoFormateado;
+        }
         const DAYS = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
         const HOURS = 24;
-        const STORAGE_KEY = 'organizador_semanal_data';
-
+        const STORAGE_KEY = 'organizador_data_' + semanaActual;
+        
         // Inicializar la cuadrícula
         function initGrid() {
             const grid = document.getElementById('weekGrid');
