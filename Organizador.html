@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organizador Semanal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --blue-50: #f0f7ff;
+            --blue-100: #e0efff;
+            --blue-200: #b9dcff;
+            --blue-300: #7cb9ff;
+            --blue-400: #3d94ff;
+            --blue-500: #0069e0;
+            --blue-600: #0052b8;
+            --blue-700: #003d8f;
+            --blue-800: #002d6b;
+            --blue-900: #001d47;
+            --blue-950: #001029;
+            
+            --text-primary: var(--blue-950);
+            --text-secondary: var(--blue-700);
+            --text-tertiary: var(--blue-500);
+            --bg-primary: #fafbff;
+            --bg-secondary: var(--blue-50);
+            --bg-card: #ffffff;
+            --border: var(--blue-200);
+            --border-light: var(--blue-100);
+            --accent: var(--blue-500);
+            --completed-bg: var(--blue-700);
+            --completed-text: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInDown 0.6s ease-out;
+        }
+
+        h1 {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2.5rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: var(--text-tertiary);
+            font-weight: 300;
+            letter-spacing: 0.03em;
+        }
+
+        .scheduler {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 24px rgba(0, 105, 224, 0.08);
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .week-grid {
+            display: grid;
+            grid-template-columns: 80px repeat(7, 1fr);
+            gap: 1px;
+            background: var(--border-light);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .day-header, .hour-label, .time-cell {
+            background: var(--bg-card);
+            padding: 0.75rem;
+            min-height: 60px;
+        }
+
+        .day-header {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+            text-align: center;
+            background: var(--blue-500);
+            color: white;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hour-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 400;
+            background: var(--blue-50);
+        }
+
+        .time-cell {
+            position: relative;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .time-cell:hover {
+            border-color: var(--border);
+        }
+
+        .time-cell.completed {
+            background: var(--completed-bg);
+            color: var(--completed-text);
+        }
+
+        .task-wrapper {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            width: 100%;
+            flex: 1;
+        }
+
+        .checkbox-container {
+            flex-shrink: 0;
+            padding-top: 0.15rem;
+        }
+
+        .task-checkbox {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            accent-color: var(--blue-500);
+        }
+
+        .time-cell.completed .task-checkbox {
+            accent-color: var(--blue-300);
+        }
+
+        .task-input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.8rem;
+            color: var(--text-primary);
+            outline: none;
+            resize: none;
+            min-height: 40px;
+        }
+
+        .time-cell.completed .task-input {
+            color: var(--completed-text);
+            text-decoration: line-through;
+        }
+
+        .task-input::placeholder {
+            color: var(--text-tertiary);
+            opacity: 0.4;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .week-grid {
+                font-size: 0.9rem;
+            }
+            
+            .day-header, .hour-label, .time-cell {
+                padding: 0.5rem;
+                min-height: 50px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .scheduler {
+                padding: 1rem;
+            }
+            
+            .week-grid {
+                grid-template-columns: 60px repeat(7, 1fr);
+                font-size: 0.75rem;
+            }
+            
+            .day-header {
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>ORGANIZADOR SEMANAL</h1>
+            <p class="subtitle">Tu planificador minimalista de 24 horas</p>
+        </header>
+
+        <div class="scheduler">
+            <div class="week-grid" id="weekGrid">
+                <!-- Encabezado vacío para esquina -->
+                <div class="hour-label"></div>
+                
+                <!-- Encabezados de días -->
+                <div class="day-header">Lunes</div>
+                <div class="day-header">Martes</div>
+                <div class="day-header">Miércoles</div>
+                <div class="day-header">Jueves</div>
+                <div class="day-header">Viernes</div>
+                <div class="day-header">Sábado</div>
+                <div class="day-header">Domingo</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const DAYS = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
+        const HOURS = 24;
+        const STORAGE_KEY = 'organizador_semanal_data';
+
+        // Inicializar la cuadrícula
+        function initGrid() {
+            const grid = document.getElementById('weekGrid');
+            
+            for (let hour = 0; hour < HOURS; hour++) {
+                // Etiqueta de hora
+                const hourLabel = document.createElement('div');
+                hourLabel.className = 'hour-label';
+                hourLabel.textContent = `${hour.toString().padStart(2, '0')}:00`;
+                grid.appendChild(hourLabel);
+                
+                // Celdas para cada día
+                for (let day = 0; day < DAYS.length; day++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'time-cell';
+                    cell.dataset.day = DAYS[day];
+                    cell.dataset.hour = hour;
+                    
+                    // Crear wrapper para checkbox y textarea
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'task-wrapper';
+                    
+                    // Crear checkbox
+                    const checkboxContainer = document.createElement('div');
+                    checkboxContainer.className = 'checkbox-container';
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.className = 'task-checkbox';
+                    checkboxContainer.appendChild(checkbox);
+                    
+                    // Crear textarea
+                    const textarea = document.createElement('textarea');
+                    textarea.className = 'task-input';
+                    textarea.placeholder = '+';
+                    textarea.rows = 2;
+                    
+                    // Evento para checkbox - marcar como completado
+                    checkbox.addEventListener('change', function() {
+                        if (this.checked) {
+                            cell.classList.add('completed');
+                        } else {
+                            cell.classList.remove('completed');
+                        }
+                        autoSave();
+                    });
+                    
+                    // Guardar automáticamente al escribir
+                    textarea.addEventListener('input', function() {
+                        autoSave();
+                    });
+                    
+                    wrapper.appendChild(checkboxContainer);
+                    wrapper.appendChild(textarea);
+                    cell.appendChild(wrapper);
+                    grid.appendChild(cell);
+                }
+            }
+            
+            loadData();
+        }
+
+        // Guardar datos automáticamente
+        function saveData() {
+            const data = {};
+            
+            document.querySelectorAll('.time-cell').forEach(cell => {
+                const day = cell.dataset.day;
+                const hour = cell.dataset.hour;
+                const textarea = cell.querySelector('.task-input');
+                const checkbox = cell.querySelector('.task-checkbox');
+                const text = textarea.value.trim();
+                const completed = checkbox.checked;
+                
+                if (text || completed) {
+                    const key = `${day}_${hour}`;
+                    data[key] = {
+                        text: text,
+                        completed: completed
+                    };
+                }
+            });
+            
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        }
+
+        // Auto-guardar con debounce
+        let saveTimeout;
+        function autoSave() {
+            clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(() => {
+                saveData();
+            }, 500);
+        }
+
+        // Cargar datos al iniciar
+        function loadData() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (!stored) return;
+            
+            try {
+                const data = JSON.parse(stored);
+                
+                document.querySelectorAll('.time-cell').forEach(cell => {
+                    const day = cell.dataset.day;
+                    const hour = cell.dataset.hour;
+                    const key = `${day}_${hour}`;
+                    
+                    if (data[key]) {
+                        const textarea = cell.querySelector('.task-input');
+                        const checkbox = cell.querySelector('.task-checkbox');
+                        
+                        textarea.value = data[key].text || '';
+                        checkbox.checked = data[key].completed || false;
+                        
+                        if (data[key].completed) {
+                            cell.classList.add('completed');
+                        }
+                    }
+                });
+            } catch (e) {
+                console.error('Error al cargar datos:', e);
+            }
+        }
+
+        // Inicializar al cargar la página
+        document.addEventListener('DOMContentLoaded', initGrid);
+
+        // Guardar antes de salir
+        window.addEventListener('beforeunload', saveData);
+    </script>
+</body>
+</html>

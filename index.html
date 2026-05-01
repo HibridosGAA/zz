@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio - Panel de Control</title>
+    <!-- Usamos la misma fuente que tu organizador para mantener la armonía -->
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #001029;    /* Azul muy oscuro (igual al de Python) */
+            --btn-color: #0069e0;   /* Azul principal */
+            --btn-hover: #0052b8;   /* Azul al pasar el mouse */
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--bg-color);
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .btn-organizador {
+            display: inline-block;
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            background-color: var(--btn-color);
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 105, 224, 0.3);
+        }
+
+        .btn-organizador:hover {
+            background-color: var(--btn-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 105, 224, 0.4);
+        }
+
+        .btn-organizador:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- El botón ahora es un simple enlace al otro archivo HTML -->
+        <a href="Organizador.html" class="btn-organizador">Organizador</a>
+    </div>
+
+</body>
+</html>
