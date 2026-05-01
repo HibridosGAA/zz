@@ -240,13 +240,34 @@
                 font-size: 0.7rem;
             }
         }
+        .btn-inicio {
+            display: inline-block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-tertiary);
+            text-decoration: none;
+            padding: 8px 20px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+        .btn-inicio:hover {
+            background-color: var(--blue-100);
+            color: var(--blue-700);
+            border-color: var(--blue-400);
+            transform: translateY(-2px);
+        }
+        
     </style>
 </head>
 <body>
     <div class="container">
         <header>
             <h1>ORGANIZADOR SEMANAL</h1>
-            <p class="subtitle">Tu planificador minimalista de 24 horas</p>
+            <div style="margin-top: 10px;">
+                <a href="index.html" class="btn-inicio">Inicio</a>
+            </div>
         </header>
 
         <div class="scheduler">
